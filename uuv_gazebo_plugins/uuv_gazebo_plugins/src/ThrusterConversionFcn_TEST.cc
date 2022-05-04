@@ -19,7 +19,7 @@
 #include <uuv_gazebo_plugins/ThrusterConversionFcn.hh>
 
 std::shared_ptr<gazebo::ConversionFunction> ConversionFromString(
-    const std::string& description)
+    const std::string &description)
 {
   std::stringstream stream;
   stream << "<sdf version='" << SDF_VERSION << "'>" << std::endl
@@ -33,12 +33,10 @@ std::shared_ptr<gazebo::ConversionFunction> ConversionFromString(
   sdf::SDF sdfParsed;
   sdfParsed.SetFromString(stream.str());
 
-  sdf::ElementPtr conversion = sdfParsed.Root()->GetElement("model")
-      ->GetElement("plugin")->GetElement("conversion");
+  sdf::ElementPtr conversion = sdfParsed.Root()->GetElement("model")->GetElement("plugin")->GetElement("conversion");
 
   std::shared_ptr<gazebo::ConversionFunction> func;
-  func.reset(gazebo::ConversionFunctionFactory::GetInstance().
-             CreateConversionFunction(conversion));
+  func.reset(gazebo::ConversionFunctionFactory::GetInstance().CreateConversionFunction(conversion));
 
   return func;
 }
@@ -46,10 +44,10 @@ std::shared_ptr<gazebo::ConversionFunction> ConversionFromString(
 TEST(ThrusterConversionFcn, Basic)
 {
   std::string description =
-        "<conversion> \n"
-        "  <type>Basic</type> \n"
-        "  <rotorConstant>0.0049</rotorConstant> \n"
-        "</conversion>";
+      "<conversion> \n"
+      "  <type>Basic</type> \n"
+      "  <rotorConstant>0.0049</rotorConstant> \n"
+      "</conversion>";
 
   std::shared_ptr<gazebo::ConversionFunction> func;
   func = ConversionFromString(description);
@@ -58,8 +56,8 @@ TEST(ThrusterConversionFcn, Basic)
   EXPECT_EQ(func->GetType(), "Basic");
 
   EXPECT_EQ(func->convert(0.0), 0.0);
-  EXPECT_EQ(func->convert(50.), 50.0*50.0*0.0049);
-  EXPECT_EQ(func->convert(-50.), -50.0*50.0*0.0049);
+  EXPECT_EQ(func->convert(50.), 50.0 * 50.0 * 0.0049);
+  EXPECT_EQ(func->convert(-50.), -50.0 * 50.0 * 0.0049);
 }
 
 TEST(ThrusterConversionFcn, Bessa)
@@ -93,9 +91,9 @@ TEST(ThrusterConversionFcn, Bessa)
 
   // Values left and right of the dead-zone
   double cmdl = -50.0;
-  double cmdr =  50.0;
-  EXPECT_EQ(cl*(cmdl*std::abs(cmdl)-dl), func->convert(cmdl));
-  EXPECT_EQ(cr*(cmdr*std::abs(cmdr)-dr), func->convert(cmdr));
+  double cmdr = 50.0;
+  EXPECT_EQ(cl * (cmdl * std::abs(cmdl) - dl), func->convert(cmdl));
+  EXPECT_EQ(cr * (cmdr * std::abs(cmdr) - dr), func->convert(cmdr));
 }
 
 TEST(ThrusterConversionFcn, LinearInterp)
@@ -114,7 +112,7 @@ TEST(ThrusterConversionFcn, LinearInterp)
          << "<outputValues>";
   for (double d : output)
     stream << d << " ";
-  stream  << "</outputValues> \n"
+  stream << "</outputValues> \n"
          << "</conversion>";
 
   std::shared_ptr<gazebo::ConversionFunction> func;
@@ -134,10 +132,10 @@ TEST(ThrusterConversionFcn, LinearInterp)
   EXPECT_EQ(output.back(), func->convert(input.back() + 0.5));
 
   // In between: make sure linear interpolation is working properly
-  for (int i = 0; i < input.size()-1; i++)
+  for (int i = 0; i < input.size() - 1; i++)
   {
-    double in  = alpha[i]*input[i] + (1-alpha[i])*input[i+1];
-    double out = alpha[i]*output[i] + (1-alpha[i])*output[i+1];
+    double in = alpha[i] * input[i] + (1 - alpha[i]) * input[i + 1];
+    double out = alpha[i] * output[i] + (1 - alpha[i]) * output[i + 1];
     EXPECT_NEAR(out, func->convert(in), 1e-7);
   }
 }

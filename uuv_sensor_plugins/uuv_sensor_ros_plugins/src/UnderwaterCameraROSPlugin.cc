@@ -173,6 +173,22 @@ void UnderwaterCameraROSPlugin::OnNewImageFrame(const unsigned char *_image,
 }
 
 /////////////////////////////////////////////////
+void UnderwaterCameraROSPlugin::OnNewReflectanceFrame(const float *_reflectance,
+  unsigned int _width, unsigned int _height,
+  unsigned int _depth, const std::string &_format)
+{
+  
+}
+
+/////////////////////////////////////////////////
+void UnderwaterCameraROSPlugin::OnNewNormalsFrame(const float *_normals,
+  unsigned int _width, unsigned int _height,
+  unsigned int _depth, const std::string &_format)
+{
+  
+}
+
+/////////////////////////////////////////////////
 void UnderwaterCameraROSPlugin::SimulateUnderwater(const cv::Mat& _inputImage,
   const cv::Mat& _inputDepth, cv::Mat& _outputImage)
 {

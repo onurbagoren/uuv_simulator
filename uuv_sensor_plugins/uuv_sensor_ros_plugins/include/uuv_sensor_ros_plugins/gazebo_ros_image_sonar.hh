@@ -101,6 +101,16 @@ namespace gazebo
                    unsigned int _width, unsigned int _height,
                    unsigned int _depth, const std::string &_format);
 
+  // /// \brief Update the reflectance frame
+  //   public: virtual void OnNewReflectanceFrame(const float *_reflectance,
+  //                             unsigned int _width, unsigned int _height,
+  //                             unsigned int _depth, const std::string &_format);
+
+    /// \brief Update the normals frame
+    // public: virtual void OnNewNormalsFrame(const float *_normals,
+    //                           unsigned int _width, unsigned int _height,
+    //                           unsigned int _depth, const std::string &_format);
+
     /// \brief Put camera data to the ROS topic
     private: void FillPointdCloud(const float *_src);
 
@@ -109,8 +119,8 @@ namespace gazebo
 
     /// \brief push depth image data into ros topic
     private: void ComputeSonarImage(const float *_src);
-	private: cv::Mat ComputeNormalImage(cv::Mat& depth);
-	private: cv::Mat ConstructSonarImage(cv::Mat& depth, cv::Mat& normals);
+    private: cv::Mat ComputeNormalImage(cv::Mat& depth);
+    private: cv::Mat ConstructSonarImage(cv::Mat& depth, cv::Mat& normals);
     private: cv::Mat ConstructScanImage(cv::Mat& depth, cv::Mat& SNR);
     private: void ApplySpeckleNoise(cv::Mat& scan, float fov);
     private: void ApplySmoothing(cv::Mat& scan, float fov);
